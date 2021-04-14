@@ -126,7 +126,7 @@ var RefreshButton = function (_React$Component) {
         value: function render() {
             return React.createElement(
                 'button',
-                { className: 'refresh_button feed_element', onClick: this.props.function },
+                { className: 'refresh_button feed_element', onClick: this.props.refreshFeed },
                 React.createElement(
                     'svg',
                     { width: '16', height: '18', viewBox: '0 0 16 18', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
@@ -152,7 +152,7 @@ var App = function (_React$Component2) {
 
         var _this2 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this2.addChild = _this2.addChild.bind(_this2);
+        _this2.refreshFeed = _this2.refreshFeed.bind(_this2);
 
         _this2.state = {
             posts: [],
@@ -163,8 +163,8 @@ var App = function (_React$Component2) {
     }
 
     _createClass(App, [{
-        key: 'addChild',
-        value: function addChild() {
+        key: 'refreshFeed',
+        value: function refreshFeed() {
             this.setState(function (state) {
                 var len = postsData.length;
 
@@ -190,7 +190,7 @@ var App = function (_React$Component2) {
             return React.createElement(
                 'div',
                 null,
-                React.createElement(RefreshButton, { 'function': this.addChild }),
+                React.createElement(RefreshButton, { refreshFeed: this.refreshFeed }),
                 this.state.posts.map(function (item) {
                     return React.createElement(PostContainer, { key: item.id, author: item.author, content: item.content });
                 })
