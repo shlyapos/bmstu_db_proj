@@ -49,6 +49,7 @@ main {
     width: 40px;
     height: 40px;
 
+    position: -webkit-sticky;
     position: sticky;
     top: 50vh;
 
@@ -66,7 +67,7 @@ main {
 }
 
 .refresh_button {
-    height: 18px;
+    height: 30px;
 
     margin-left: 205px;
     padding: 6px 0;
@@ -77,6 +78,9 @@ main {
 
     border-radius: 5px;
     cursor: pointer;
+
+    outline: none;
+    border: none;
 }
 
 .refresh_button:hover {
@@ -89,6 +93,7 @@ main {
 
     margin: 0 0 0 5px;
 
+    font-family: Montserrat;
     font-style: normal;
     font-weight: 600;
     font-size: 12px;
@@ -161,12 +166,18 @@ main {
 
 .post_image {
     width: 100%;
-    height: 100%;
+    /* height: 0; */
+
+    /* background-image: url(../img/test.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; */
+
+    /* padding-top: 77%; */
 }
 
 .post_action_block {
     width: 46px;
-    height: 488px;
 
     margin-left: 15px;
 
@@ -182,6 +193,8 @@ main {
     padding-bottom: 14px;
 
     top: 10px;
+
+    position: -webkit-sticky;
     position: sticky;
 
     background-color: #FFFFFF;
@@ -271,11 +284,9 @@ main {
 }
 
 .comment_wrapper {
-    height: 421px;
+    height: auto;
 
-    overflow-y: scroll;
-
-    /* padding: 15px 0 0; */
+    /* overflow-y: scroll; */
 }
 
 .comment {
@@ -296,9 +307,6 @@ main {
     width: 219px;
 
     font-style: normal;
-    font-weight: 600;
-    font-size: 10px;
-    line-height: 12px;
     display: flex;
     align-items: center;
 
@@ -308,21 +316,30 @@ main {
 
     margin-left: 5px;
     padding-bottom: 5px;
-    border-bottom: 2px solid #000000;
+    border-bottom: 1px solid #686868;
 }
 
 .comment_name {
     margin: 0 0;
+
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
     color: #353535;
 }
 
 .comment_text {
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+
     margin: 5px 0 5px;
 }
 
 .comment_time {
     margin: 0 0;
 
+    font-weight: 600;
     font-size: 8px;
     line-height: 10px;
     color: #C0C0C0;
