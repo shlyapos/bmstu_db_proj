@@ -4,8 +4,8 @@ import { Application } from 'express';
 import * as fs from 'fs';
 
 class App {
-    public app: Application;
-    public port: number;
+    private app: Application;
+    private port: number;
 
     constructor(listenPort: number = 5015) {
         this.app = express();
