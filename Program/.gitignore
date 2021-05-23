@@ -131,6 +131,7 @@ temp/
 **/*.back.*
 
 node_modules
+dbconfig.json
 
 *.sublime*
 
