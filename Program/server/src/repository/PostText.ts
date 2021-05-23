@@ -1,18 +1,16 @@
 import { BaseStorage } from "src/storage/BaseStorage";
 import { BaseRepository } from "./BaseRepository";
 
-interface IPostTable {
+interface IPostTextTable {
     id: number,
-    authorId: number,
-    rating: number,
-    publicDate: string,
-}
+    data: string
+};
 
-export class PostRepository extends BaseRepository {
+export class PostTextRepository extends BaseRepository {
     constructor(currentStorage: BaseStorage) {
         super();
 
-        this.table = 'post';
+        this.table = 'post_text';
         this.storage = currentStorage;
     }
 
@@ -32,11 +30,11 @@ export class PostRepository extends BaseRepository {
         return true;
     }
 
-    public create(newData: IPostTable): void {
+    public create(newData: IPostTextTable): void {
         this.storage.create(this.table, newData);
     }
 
-    public update(id: number, newData: IPostTable): void {
+    public update(id: number, newData: IPostTextTable): void {
         this.storage.update(this.table, id, newData);
     }
 
