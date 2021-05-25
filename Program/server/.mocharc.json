@@ -1,0 +1,4 @@
+{
+    "require": "./StartTest.js",
+    "reporter": "list"
+  }

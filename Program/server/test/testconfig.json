@@ -1,0 +1,66 @@
+{
+    "Account": [
+        {
+            "id": 1,
+            "name": "Sasha",
+            "login": "shlyapa",
+            "email": "shlyapa@mail.ru",
+            "avatar": "./src/img/avatar.png",
+            "salt": "gdfa",
+            "hash": "uo36t2gjhd"
+        },
+        {
+            "id": 2,
+            "name": "Vasya",
+            "login": "vas",
+            "email": "vas@mail.ru",
+            "avatar": "./src/img/avatar123.png",
+            "salt": "yks74h",
+            "hash": "oiwhpdhqwpjhdq"
+        },
+        {
+            "id": 3,
+            "name": "Nikita",
+            "login": "nick",
+            "email": "nick@mail.ru",
+            "avatar": "./src/img/kartinka.png",
+            "salt": "7687nduqw",
+            "hash": "234-isjhdahbd"
+        },
+        {
+            "id": 4,
+            "name": "Petya",
+            "login": "pett",
+            "email": "pett@gmail.com",
+            "avatar": "./src/img/ava.png",
+            "salt": "dayteavtomat",
+            "hash": "3249unskpugp23"
+        }
+    ],
+    "Post": [
+        {
+            "id": 1,
+            "authorId": 3,
+            "rating": 200,
+            "publicDate": "20-02-2001"
+        },
+        {
+            "id": 2,
+            "authorId": 30,
+            "rating": 100,
+            "publicDate": "12-03-2021"
+        },
+        {
+            "id": 3,
+            "authorId": 12,
+            "rating": 145,
+            "publicDate": "15-02-2001"
+        },
+        {
+            "id": 4,
+            "authorId": 13,
+            "rating": 123,
+            "publicDate": "01-09-2001"
+        }
+    ]
+}
