@@ -38,48 +38,48 @@ _chai.use(_chaiAsPromised);
         }
     }
 
-    @test async '"Take all"'() {
+    @test '"Take all"'() {
         return expect(this.SUT.takeAll()).to.eventually.eql(this.testData);
     }
 
-    @test async '"Take all" with empty data base'() {
+    @test '"Take all" with empty data base'() {
         for (let i = 1; i < 5; i++) {
-            await this.SUT.delete(i).should.notify(done);
+            this.SUT.delete(i).should.notify(done);
         }
 
         return expect(this.SUT.takeAll()).to.eventually.rejectedWith('Table is empty');
     }
 
-    @test async '"Take by id" with existing record'() {
+    @test '"Take by id" with existing record'() {
         return expect(this.SUT.takeById(4)).to.eventually.fulfilled;
     }
 
-    @test async '"Take by id" with non-existing record'() {
+    @test '"Take by id" with non-existing record'() {
         return expect(this.SUT.takeById(10)).to.eventually.rejectedWith('Record with id: 10 not exist');
     }
 
-    @test async '"Create" with correct data'() {
-        await this.SUT.create(this.testCUD).should.notify(done);
+    @test '"Create" with correct data'() {
+        this.SUT.create(this.testCUD).should.notify(done);
         return expect(this.SUT.takeById(5)).to.eventually.eql(this.testCUD);
     }
 
-    @test async '"Update" existing record'() {
+    @test '"Update" existing record'() {
         this.testCUD.id = 4;
 
-        await this.SUT.update(4, this.testCUD).should.notify(done);
+        this.SUT.update(4, this.testCUD).should.notify(done);
         return expect(this.SUT.takeById(4)).to.eventually.eql(this.testCUD);
     }
 
-    @test async '"Update" non-existing record'() {
+    @test '"Update" non-existing record'() {
         return expect(this.SUT.update(10, this.testCUD)).to.eventually.rejectedWith('Record with id: 10 not exist');
     }
 
-    @test async '"Delete" existing record'() {
-        await this.SUT.delete(3).should.notify(done);
+    @test '"Delete" existing record'() {
+        this.SUT.delete(3).should.notify(done);
         return expect(this.SUT.takeById(3)).to.eventually.rejectedWith('Record with id: 3 not exist');
     }
 
-    @test async '"Delete" non-existing record'() {
+    @test '"Delete" non-existing record'() {
         return expect(this.SUT.delete(10)).to.eventually.rejectedWith('Record with id: 10 not exist');
     }
 };
