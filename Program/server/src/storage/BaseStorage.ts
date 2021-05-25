@@ -1,9 +1,9 @@
 import { PgConnection } from "./connection/PgConnection";
 
 export interface IWriteStorage {
-    create(tableName: string, newData: any): void;
-    update(tableName: string, currentId: number, newData: any): void;
-    delete(tableName: string, id: number): void;
+    create(tableName: string, newData: any): Promise<any>;
+    update(tableName: string, currentId: number, newData: any): Promise<any>;
+    delete(tableName: string, id: number): Promise<any>;
 }
 
 export interface IReadStorage {
@@ -20,15 +20,15 @@ export abstract class BaseStorage implements IWriteStorage, IReadStorage {
         throw new Error("Method not implemented.");
     }
 
-    public create(tableName: string, newData: any): void {
+    public create(tableName: string, newData: any): Promise<any> {
         throw new Error("Method not implemented.");
     }
 
-    public update(tableName: string, id: number, newData: any): void {
+    public update(tableName: string, id: number, newData: any): Promise<any> {
         throw new Error("Method not implemented.");
     }
 
-    public delete(tableName: string, id: number): void {
+    public delete(tableName: string, id: number): Promise<any> {
         throw new Error("Method not implemented.");
     }
 };
