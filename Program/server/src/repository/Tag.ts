@@ -14,31 +14,23 @@ export class TagRepository extends BaseRepository {
         this.storage = currentStorage;
     }
 
-    public async takeAll(): Promise<boolean> {
-        await this.storage.takeAll(this.table).then(
-            result => console.log(result),
-            error => console.error(error)
-        );
-        return true;
+    public async takeAll(): Promise<any> {
+        return await this.storage.takeAll(this.table);
     }
 
-    public async takeById(id: number): Promise<boolean> {
-        await this.storage.takeById(this.table, id).then(
-            result => console.log(result),
-            error => console.error(error)
-        );
-        return true;
+    public async takeById(id: number): Promise<any> {
+        return await this.storage.takeById(this.table, id);
     }
 
-    public create(newData: ITagTable): void {
-        this.storage.create(this.table, newData);
+    public async create(newData: ITagTable): Promise<any> {
+        return await this.storage.create(this.table, newData);
     }
 
-    public update(id: number, newData: ITagTable): void {
-        this.storage.update(this.table, id, newData);
+    public async update(id: number, newData: ITagTable): Promise<any> {
+        return await this.storage.update(this.table, id, newData);
     }
 
-    public delete(id: number): void {
-        this.storage.delete(this.table, id);
+    public async delete(id: number): Promise<any> {
+        return await this.storage.delete(this.table, id);
     }
 };
