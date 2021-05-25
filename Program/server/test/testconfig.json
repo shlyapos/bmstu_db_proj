@@ -62,5 +62,89 @@
             "rating": 123,
             "publicDate": "01-09-2001"
         }
+    ],
+    "PostPicture": [
+        {
+            "id": 1,
+            "path": "./src/img/class.png"
+        },
+        {
+            "id": 2,
+            "path": "./src/path/avatar.jpg"
+        },
+        {
+            "id": 3,
+            "path": "./src/newspage/news.png"
+        },
+        {
+            "id": 4,
+            "path": "./public/funnycat.jpeg"
+        }
+    ],
+    "PostText": [
+        {
+            "id": 1,
+            "data": "The caracal is a medium-sized wild cat native to Africa, the Middle East, Central Asia, and arid areas of Pakistan and northwestern India"
+        },
+        {
+            "id": 2,
+            "data": "It is characterised by a robust build, long legs, a short face, long tufted ears, and long canine teeth"
+        },
+        {
+            "id": 3,
+            "data": "Its coat is uniformly reddish tan or sandy, while the ventral parts are lighter with small reddish markings"
+        },
+        {
+            "id": 4,
+            "data": "It reaches 40–50 cm (16–20 in) at the shoulder and weighs 8–19 kg (18–42 lb)"
+        }
+    ],
+    "Review": [
+        {
+            "id": 1,
+            "postId": 12,
+            "authorId": 3,
+            "reviewData": "Amogus is a bastardized version of the name of the 2018 video game Among Us",
+            "publicDate": "14-04-2109"
+        },
+        {
+            "id": 2,
+            "postId": 1,
+            "authorId": 15,
+            "reviewData": "In January 2021, the word gained popularity as a catchphrase used in ironic memes,",
+            "publicDate": "11-12-2009"
+        },
+        {
+            "id": 3,
+            "postId": 3,
+            "authorId": 15,
+            "reviewData": "often used to replace dialogue in cartoons, and as a way of shitposting by spamming the phrase alongside sus",
+            "publicDate": "21-01-2021"
+        },
+        {
+            "id": 4,
+            "postId": 24,
+            "authorId": 6,
+            "reviewData": "Additionally, Amogus refers to the simplified drawing of a crewmate from Among Us used in the memes",
+            "publicDate": "31-12-2018"
+        }
+    ],
+    "Tag": [
+        {
+            "id": 1,
+            "name": "meme"
+        },
+        {
+            "id": 2,
+            "name": "floppa"
+        },
+        {
+            "id": 3,
+            "name": "cats"
+        },
+        {
+            "id": 4,
+            "name": "news"
+        }
     ]
 }
