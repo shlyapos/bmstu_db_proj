@@ -1,8 +1,8 @@
-import { BaseStorage } from "./BaseStorage";
+import { BaseStorage, IQueryParameters } from "./BaseStorage";
 import { Dictionary, cloneDeep } from "lodash";
 
 // Class for repository tests
-export class ArrayStorage extends BaseStorage {
+export default class ArrayStorage extends BaseStorage {
     private data: Dictionary<any[]> = {};
 
     constructor() {
@@ -37,10 +37,15 @@ export class ArrayStorage extends BaseStorage {
         });
     }
 
-    public create(tableName: string, newData: any): Promise<any> {
+    public create(tableName: string, params: IQueryParameters): Promise<any> {
+        const record = params.values.reduce((newObj, item) => {
+            newObj[item] = item;
+            return newObj;
+        }, {});
+
         return new Promise<any>((resolve, reject) => {
             try {
-                this.data[tableName].push(newData);
+                this.data[tableName].push(record);
             } catch (error) {
                 throw new Error(`Error with push ${error}`);
             }
