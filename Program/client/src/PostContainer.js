@@ -1,47 +1,198 @@
 import React from "react";
 
 class PostAuthor extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.deletePost = this.deletePost.bind(this);
+
+        this.state = {
+            postId: this.props.postId,
+            userRole: this.props.userRole
+        };
+    }
+
+    async deletePost() {
+        await this.props.fetchDeletePost(this.state.postId);
+    }
+
     render(props) {
+        let visible = (this.state.userRole === 'admin') ? 'flex' : 'none';
+
         return (
             <div className="post_author">
-                <img className="author_avatar" src={this.props.avatar} alt={this.props.name} />
-                <h3 className="author_name user_name">{this.props.name}</h3>
+                <div className="author__info_wrapper">
+                    <img className="author_avatar" src={this.props.avatar} alt={this.props.name} />
+                    <h3 className="author_name user_name">{this.props.name}</h3>
+                </div>
+                <button className="author__delete_post" onClick={this.deletePost} style={{display: visible}}>
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" clipRule="evenodd" d="M0.293 1.293C0.480528 1.10553 0.734836 1.00021 1 1.00021C1.26516 1.00021 1.51947 1.10553 1.707 1.293L6 5.586L10.293 1.293C10.3852 1.19749 10.4956 1.1213 10.6176 1.0689C10.7396 1.01649 10.8708 0.988901 11.0036 0.987747C11.1364 0.986593 11.2681 1.01189 11.391 1.06218C11.5139 1.11246 11.6255 1.18671 11.7194 1.2806C11.8133 1.37449 11.8875 1.48615 11.9378 1.60904C11.9881 1.73194 12.0134 1.86362 12.0123 1.9964C12.0111 2.12918 11.9835 2.2604 11.9311 2.3824C11.8787 2.50441 11.8025 2.61475 11.707 2.707L7.414 7L11.707 11.293C11.8892 11.4816 11.99 11.7342 11.9877 11.9964C11.9854 12.2586 11.8802 12.5094 11.6948 12.6948C11.5094 12.8802 11.2586 12.9854 10.9964 12.9877C10.7342 12.9899 10.4816 12.8892 10.293 12.707L6 8.414L1.707 12.707C1.5184 12.8892 1.2658 12.9899 1.0036 12.9877C0.741402 12.9854 0.49059 12.8802 0.305182 12.6948C0.119773 12.5094 0.0146042 12.2586 0.0123258 11.9964C0.0100473 11.7342 0.110842 11.4816 0.293 11.293L4.586 7L0.293 2.707C0.105529 2.51947 0.000213623 2.26516 0.000213623 2C0.000213623 1.73483 0.105529 1.48053 0.293 1.293V1.293Z" fill="black"/>
+                    </svg>
+                </button>
             </div>
         );
     }
-}
+};
 
 class PostContent extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.filterTags = this.filterTags.bind(this);
+    }
+
+    filterTags(tags) {
+        function checkIn(tags, newTag) {
+            for (let tag of tags)
+                if (tag.name === newTag.name)
+                    return true;
+            return false;
+        }
+
+        let filtered = [];
+
+        for (let tag of tags) {
+            if (!checkIn(filtered, tag))
+                filtered.push(tag)
+        }
+
+        return filtered;
+    }
+
     render(props) {
+        const text = !this.props.text ? '' : this.props.text.data;
+        let images = this.props.picture;
+
+        if (!images) images = [];
+        let tagsFiltered = this.filterTags(this.props.tags);
+
         return (
             <div className="post_content">
-                <p className="post_text" style={{ whiteSpace: "pre-line" }}>{this.props.text}</p>
-                <img className="post_image" src={this.props.image} alt="" />
+                <div className="post__tags">
+                    {
+                        tagsFiltered.map(item => <p key={item.id + this.props.postId} className="post__tag">{item.name}</p>)
+                    }
+                </div>
+                <p className="post_text" style={{ whiteSpace: "pre-line" }}>{text}</p>
+                {
+                    images.map(item => <img key={item.id + this.props.postId} className="post_image" src={item.path} alt="" />)
+                }
             </div>
         );
     }
-}
+};
 
 class PostWrapper extends React.Component {
     render(props) {
         return (
             <div className="post_wrapper feed_element">
-                <PostAuthor avatar={this.props.author.avatar} name={this.props.author.name} />
-                <PostContent text={this.props.content.text} image={this.props.content.image} />
+                <PostAuthor name={this.props.author.name}
+                            postId={this.props.postId}
+                            avatar={this.props.author.avatar} 
+                            userRole={this.props.userRole} 
+                            fetchDeletePost={this.props.fetchDeletePost}
+                />
+                <PostContent postId={this.props.postId}
+                             text={this.props.text}
+                             picture={this.props.picture}
+                             tags={this.props.tags}
+                />
             </div>
         );
     }
-}
+};
 
-class PostComments extends React.Component {
+class Review extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.deleteReview = this.deleteReview.bind(this);
+    }
+
+    deleteReview() {
+        this.props.fetchDelReview(this.props.id);
+    }
+
+    render(props) {
+        let visible = (this.props.userRole === 'admin') ? 'flex' : 'none';
+
+        return (
+            <div>
+                <div className="comment_wrapper">
+                    <div className="comment">
+                        <img src={this.props.author.avatar} alt={this.props.author.name} className="comment_author_avatar" />
+                        <div className="comment_content">
+                            <p className="comment_name">{this.props.author.name}</p>
+                            <p className="comment_text">{this.props.data.review_data}</p>
+                            <p className="comment_time">{this.props.data.public_date}</p>
+                        </div>
+                        <button className="author__delete_post" onClick={this.deleteReview} style={{display: visible}}>
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M0.293 1.293C0.480528 1.10553 0.734836 1.00021 1 1.00021C1.26516 1.00021 1.51947 1.10553 1.707 1.293L6 5.586L10.293 1.293C10.3852 1.19749 10.4956 1.1213 10.6176 1.0689C10.7396 1.01649 10.8708 0.988901 11.0036 0.987747C11.1364 0.986593 11.2681 1.01189 11.391 1.06218C11.5139 1.11246 11.6255 1.18671 11.7194 1.2806C11.8133 1.37449 11.8875 1.48615 11.9378 1.60904C11.9881 1.73194 12.0134 1.86362 12.0123 1.9964C12.0111 2.12918 11.9835 2.2604 11.9311 2.3824C11.8787 2.50441 11.8025 2.61475 11.707 2.707L7.414 7L11.707 11.293C11.8892 11.4816 11.99 11.7342 11.9877 11.9964C11.9854 12.2586 11.8802 12.5094 11.6948 12.6948C11.5094 12.8802 11.2586 12.9854 10.9964 12.9877C10.7342 12.9899 10.4816 12.8892 10.293 12.707L6 8.414L1.707 12.707C1.5184 12.8892 1.2658 12.9899 1.0036 12.9877C0.741402 12.9854 0.49059 12.8802 0.305182 12.6948C0.119773 12.5094 0.0146042 12.2586 0.0123258 11.9964C0.0100473 11.7342 0.110842 11.4816 0.293 11.293L4.586 7L0.293 2.707C0.105529 2.51947 0.000213623 2.26516 0.000213623 2C0.000213623 1.73483 0.105529 1.48053 0.293 1.293V1.293Z" fill="black"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+};
+
+class PostReviews extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = { isOpen: false }
+        this.fetchAddReview = this.fetchAddReview.bind(this);
+        this.fetchDelReview = this.fetchDelReview.bind(this);
+
+        this.state = {
+            reviews: this.props.reviews,
+            isOpen: false,
+            postId: this.props.postId,
+            userId: this.props.userId,
+        };
+    }
+
+    async fetchAddReview() {
+        const review = document.getElementById('review_text ' + this.state.postId);
+        const userId = this.state.userId;
+        const postId = this.state.postId;
+        const date = new Date();
+
+        await fetch('/api/add/review', {
+            method: 'POST',
+            body: JSON.stringify({
+                review: review.value,
+                userId: userId,
+                postId: postId,
+                date: date,
+                token: localStorage.getItem('token')
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(result => { 
+            console.log(result); 
+            review.value = '';
+        })
+        .catch(error => console.log(error));
+    }
+
+    async fetchDelReview(id) {
+        await fetch('/api/del/review', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: id
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(result => console.log(result))
+        .catch(error => console.log(error));
     }
 
     render(props) {
         let displayStatus;
+        
         if (this.props.commentsState)
             displayStatus = "block"
         else
@@ -50,27 +201,26 @@ class PostComments extends React.Component {
         return (
             <div className="post_commentary feed_element" style={{ display: displayStatus }}>
                 <div className="comment_send_wrapper">
-                    <input type="text" className="comment_input" placeholder="Ваш комментарий..." />
-                    <button className="comment_send">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11 7L14 10L11 7ZM14 10L11 13L14 10ZM14 10H6H14ZM19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </button>
+                        <input id={"review_text " + this.state.postId} type="text" className="comment_input" placeholder="Ваш комментарий..." />
+                        <button className="comment_send" onClick={this.fetchAddReview}>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 7L14 10L11 7ZM14 10L11 13L14 10ZM14 10H6H14ZM19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
                 </div>
-                <div className="comment_wrapper">
-                    <div className="comment">
-                        <img src="../img/avatar_nikita.png" alt="Никита Павлов" className="comment_author_avatar" />
-                        <div className="comment_content">
-                            <p className="comment_name">Никита Павлов</p>
-                            <p className="comment_text">Очень люблю делать куличики в своём городе, Новосибирск, крайне расслабляет</p>
-                            <p className="comment_time">02.04.2021 в 12:30</p>
-                        </div>
-                    </div>
-                </div>
+                {
+                    this.state.reviews.map(item => <Review key={item.reviewInfo.id} 
+                                                           id={item.reviewInfo.id}
+                                                           fetchDelReview={this.fetchDelReview}
+                                                           userRole={this.props.userRole}
+                                                           data={item.reviewInfo} 
+                                                           author={item.reviewAuth} />
+                                            )
+                }
             </div>
         );
     }
-}
+};
 
 class PostActionBlock extends React.Component {
     render(props) {
@@ -84,16 +234,16 @@ class PostActionBlock extends React.Component {
         return (
             <div className="post_action_block">
                 <div className="action_move_block feed_element">
-                    <button className="action_button plus">
+                    <button className="action_button plus" onClick={this.props.incRating}>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="8.09998" width="1.8" height="18" fill="#C4C4C4" />
                             <rect y="9.89999" width="1.8" height="18" transform="rotate(-90 0 9.89999)" fill="#C4C4C4" />
                         </svg>
                     </button>
 
-                    <p className="rating">3872</p>
+                    <p className="rating">{this.props.rating}</p>
 
-                    <button className="action_button minus">
+                    <button className="action_button minus" onClick={this.props.decRating}>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect y="9.89999" width="1.8" height="18" transform="rotate(-90 0 9.89999)" fill="#C4C4C4" />
                         </svg>
@@ -108,31 +258,75 @@ class PostActionBlock extends React.Component {
             </div>
         );
     }
-}
+};
 
 class PostContainer extends React.Component {
     constructor(props) {
         super(props)
 
+        this.incRating = this.incRating.bind(this);
+        this.decRating = this.decRating.bind(this);
+
         this.changeCommentsVisible = this.changeCommentsVisible.bind(this);
-        this.state = { commentsVisible: false };
+        this.state = { 
+            postId: this.props.postId,
+            commentsVisible: false,
+            rating: parseInt(this.props.rating) 
+        };
     }
 
     changeCommentsVisible() {
-        this.setState(state => {
-            return { commentsVisible: !state.commentsVisible }
-        });
+        this.setState({ commentsVisible: !this.state.commentsVisible })
+    }
+
+    async incRating() {
+        this.setState({ rating: this.state.rating + 1 });
+
+        await fetch('/api/inc/rating', {
+            method: 'POST',
+            body: JSON.stringify({ id: this.state.postId }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .catch(error => console.log(error));
+    }
+
+    async decRating() {
+        this.setState({ rating: this.state.rating - 1 });
+
+        await fetch('/api/dec/rating', {
+            method: 'POST',
+            body: JSON.stringify({ id: this.state.postId }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .catch(error => console.log(error));
     }
 
     render(props) {
         return (
             <section className="post" style={{ paddingLeft: this.state.commentsVisible ? "0px" : "205px" }}>
-                <PostWrapper author={this.props.author} content={this.props.content} />
-                <PostComments commentsState={this.state.commentsVisible} />
-                <PostActionBlock commentsState={this.state.commentsVisible} changeCommentsVisible={this.changeCommentsVisible} />
+                <PostWrapper postId={this.props.postId}
+                             userRole={this.props.userRole} 
+                             author={this.props.author} 
+                             text={this.props.text} 
+                             picture={this.props.picture}
+                             tags={this.props.tags}
+                             fetchDeletePost={this.props.fetchDeletePost}
+                />
+                <PostReviews postId={this.props.postId} 
+                             userId={this.props.userId} 
+                             userRole={this.props.userRole} 
+                             reviews={this.props.reviews} 
+                             commentsState={this.state.commentsVisible} 
+                />
+                <PostActionBlock rating={this.state.rating}
+                                 incRating={this.incRating}
+                                 decRating={this.decRating}
+                                 commentsState={this.state.commentsVisible} 
+                                 changeCommentsVisible={this.changeCommentsVisible} 
+                />
             </section>
         );
     }
-}
+};
 
 export default PostContainer;
