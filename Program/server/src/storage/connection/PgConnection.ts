@@ -7,6 +7,7 @@ export default class PgConnection {
     private static instance: PgConnection;
     // private connect: Client;
     private connect: Pool = null;
+    private role: string;
 
     private constructor() { }
 
@@ -18,20 +19,14 @@ export default class PgConnection {
         return PgConnection.instance;
     }
 
-    private initDatabase() {
+    private initDatabase(role: string) {
         let dataBase = PgConnection.getInstance();
 
-        if (dataBase.connect == null) {
-            let configDir = path.join(__dirname, '../../../dbconfig.json');
-            let userData = JSON.parse(fs.readFileSync(configDir, 'utf8')).user;
+        if (dataBase.connect === null || this.role !== role) {
+            this.role = role;
 
-            // dataBase.connect = new Client({
-            //     user: userData.username,
-            //     host: userData.host,
-            //     database: userData.database,
-            //     password: userData.password,
-            //     port: userData.port
-            // });
+            let configDir = path.join(__dirname, '../../../dbconfig.json');
+            let userData = JSON.parse(fs.readFileSync(configDir, 'utf8'))[role];
 
             dataBase.connect = new Pool({
                 database: userData.database,
@@ -39,27 +34,27 @@ export default class PgConnection {
                 password: userData.password,
                 port: userData.port,
                 host: userData.host,
-                max: 20,
-                idleTimeoutMillis: 0,
                 connectionTimeoutMillis: 0,
             });
-
-            dataBase.connect.connect();
         }
 
         return dataBase;
     }
 
-    public getConnect(): Pool {
+    public getConnect(role: string): any {
         try {
-            let db = this.initDatabase();
-            return db.connect;
+            let db = this.initDatabase(role);
+            return db.connect.connect();
         } catch (error) {
             throw new Error(`Error with connection: ${error}`);
         }
     }
 
     public endConnect(): void {
-        this.connect.end();
+        try {
+            this.connect.end();
+        } catch (error) {
+            throw new Error(`Error with connection: ${error}`);
+        }
     }
 };
