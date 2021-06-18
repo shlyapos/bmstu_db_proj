@@ -18,9 +18,10 @@ CREATE TABLE IF NOT EXISTS account (
     name    VARCHAR(32) NOT NULL,
 	login   VARCHAR(32)	NOT NULL UNIQUE,
 	email 	VARCHAR(64)	NOT NULL UNIQUE,
-    avatar  VARCHAR(32) NOT NULL UNIQUE,
-	salt 	CHAR(32)	NOT NULL UNIQUE,
-	hash	CHAR(64)	NOT NULL
+    avatar  VARCHAR		NOT NULL UNIQUE,
+	salt 	VARCHAR		NOT NULL UNIQUE,
+	hash	VARCHAR		NOT NULL,
+	role 	VARCHAR		NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS post_text (
@@ -30,12 +31,12 @@ CREATE TABLE IF NOT EXISTS post_text (
 
 CREATE TABLE IF NOT EXISTS tag (
     id 	 SERIAL 	 NOT NULL PRIMARY KEY,
-	name VARCHAR(32) NOT NULL
+	name VARCHAR(32) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS post_pict (
 	id 	 SERIAL 	 NOT NULL PRIMARY KEY,
-	path VARCHAR(64) UNIQUE
+	path VARCHAR	 UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS post (
@@ -80,3 +81,32 @@ CREATE TABLE IF NOT EXISTS text_to_post (
 	text_id	INTEGER NOT NULL REFERENCES post_text(id),
 	PRIMARY KEY (post_id, text_id)
 );
+
+
+
+COPY post_text(data) 
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\post_text.csv'	WITH (FORMAT csv);
+COPY tag(name) 
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\tag.csv' 		WITH (FORMAT csv);
+COPY post_pict(path)
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\picture.csv' 	WITH (FORMAT csv);
+COPY account(name, login, email, avatar, salt, hash, role) 
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\account.csv' 	WITH (FORMAT csv);
+COPY post(author_id, rating, public_date) 
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\post.csv'	 	WITH (FORMAT csv);
+COPY review(post_id, auth_id, review_data, public_date) 	
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\review.csv' 		WITH (FORMAT csv);
+
+
+-- Связующие таблицы
+-- Для картинок
+COPY tag_to_picture(tag_id, pic_id)
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\tag_to_picture.csv' WITH (FORMAT csv);
+COPY picture_to_post(post_id, pict_id)
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\picture_to_post.csv' WITH (FORMAT csv);
+
+-- Для текста
+COPY tag_to_text(tag_id, text_id)
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\tag_to_text.csv' WITH (FORMAT csv);
+COPY text_to_post(post_id, text_id)
+FROM 'C:\Repositories\bmstu_dataBase\lab_01\source\text_to_post.csv' WITH (FORMAT csv);
