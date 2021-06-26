@@ -28,7 +28,9 @@ export default class Manager {
 
     public async signup(userData: any): Promise<IAccountRecord> {
         userData.role = 'log_user';
-        return await this.accountService.addUser(userData, this.role);
+
+        const newUserData = await this.accountService.addUser(userData, this.role);
+        return await this.accountService.checkUser(newUserData, this.role)
     }
 
     public async addAdmin(userData: any): Promise<IAccountRecord> {

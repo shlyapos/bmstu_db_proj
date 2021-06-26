@@ -54,13 +54,7 @@ export default class AccountService {
         };
 
         await this.repository.create(newUser, role).catch(error => { throw error });
-
-        let user = (await this.repository.filterByLogin(newUser.login, role))[0];
-
-        delete user.salt;
-        delete user.hash;
-
-        return user;
+        return { login: data.login, password: data.password };
     }
 
     public async updateRecord(id: number, data: any, role: string): Promise<any> {
