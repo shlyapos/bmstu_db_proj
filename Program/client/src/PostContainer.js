@@ -224,7 +224,10 @@ class PostReviews extends React.Component {
 
 class PostActionBlock extends React.Component {
     render(props) {
-        let commentIcon
+        let commentIcon;
+
+        let visible = (this.props.userRole === 'guest') ? 'none' : 'flex';
+        let blockSize = (this.props.userRole === 'guest') ? '32px' : '111px';
 
         if (this.props.commentsState)
             commentIcon = <path fillRule="evenodd" clipRule="evenodd" d="M0.438738 0.457933C0.719747 0.176726 1.10083 0.0187527 1.49817 0.0187527C1.89552 0.0187527 2.2766 0.176726 2.55761 0.457933L8.99063 6.89743L15.4237 0.457933C15.5619 0.314667 15.7272 0.200394 15.9101 0.12178C16.0929 0.0431668 16.2895 0.00178736 16.4885 5.66356e-05C16.6875 -0.00167409 16.8848 0.0362782 17.0689 0.111699C17.2531 0.187121 17.4204 0.2985 17.5611 0.43934C17.7018 0.580179 17.8131 0.747657 17.8884 0.932001C17.9638 1.11635 18.0017 1.31387 17.9999 1.51303C17.9982 1.7122 17.9569 1.90903 17.8783 2.09204C17.7998 2.27504 17.6856 2.44056 17.5425 2.57893L11.1095 9.01843L17.5425 15.4579C17.8155 15.7408 17.9665 16.1197 17.9631 16.513C17.9597 16.9063 17.8021 17.2825 17.5243 17.5607C17.2464 17.8388 16.8706 17.9965 16.4777 17.9999C16.0848 18.0034 15.7063 17.8522 15.4237 17.5789L8.99063 11.1394L2.55761 17.5789C2.27499 17.8522 1.89646 18.0034 1.50356 17.9999C1.11066 17.9965 0.734825 17.8388 0.456992 17.5607C0.179159 17.2825 0.0215641 16.9063 0.0181499 16.513C0.0147358 16.1197 0.165776 15.7408 0.438738 15.4579L6.87177 9.01843L0.438738 2.57893C0.157815 2.29764 0 1.91618 0 1.51843C0 1.12069 0.157815 0.739224 0.438738 0.457933Z" fill="#555555" />
@@ -233,8 +236,8 @@ class PostActionBlock extends React.Component {
 
         return (
             <div className="post_action_block">
-                <div className="action_move_block feed_element">
-                    <button className="action_button plus" onClick={this.props.incRating}>
+                <div className="action_move_block feed_element" style={{height: blockSize}}>
+                    <button className="action_button plus" onClick={this.props.incRating} style={{display: visible}}>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="8.09998" width="1.8" height="18" fill="#C4C4C4" />
                             <rect y="9.89999" width="1.8" height="18" transform="rotate(-90 0 9.89999)" fill="#C4C4C4" />
@@ -243,13 +246,13 @@ class PostActionBlock extends React.Component {
 
                     <p className="rating">{this.props.rating}</p>
 
-                    <button className="action_button minus" onClick={this.props.decRating}>
+                    <button className="action_button minus" onClick={this.props.decRating} style={{display: visible}}>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect y="9.89999" width="1.8" height="18" transform="rotate(-90 0 9.89999)" fill="#C4C4C4" />
                         </svg>
                     </button>
 
-                    <button className="action_button comment_btn" onClick={this.props.changeCommentsVisible}>
+                    <button className="action_button comment_btn" onClick={this.props.changeCommentsVisible} style={{display: visible}}>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             {commentIcon}
                         </svg>
@@ -318,7 +321,8 @@ class PostContainer extends React.Component {
                              reviews={this.props.reviews} 
                              commentsState={this.state.commentsVisible} 
                 />
-                <PostActionBlock rating={this.state.rating}
+                <PostActionBlock userRole={this.props.userRole} 
+                                 rating={this.state.rating}
                                  incRating={this.incRating}
                                  decRating={this.decRating}
                                  commentsState={this.state.commentsVisible} 
