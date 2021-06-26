@@ -95,12 +95,12 @@ class App extends React.Component {
             headers: { 'Content-Type': 'application/json' }
         })
         .then(result => {
-            if (result.status === 200) result.json()
-            .then(data => {
-                localStorage.setItem('token', data.token);
-                this.updateCurrentUser();
-            });
-            else {
+            if (result.status === 200) { 
+                result.json().then(data => {
+                    localStorage.setItem('token', data.token);
+                    this.updateCurrentUser();
+                });
+            } else {
                 this.setState({ warningSignIn: 'Неправильный логин или пароль' })
             }
         })
@@ -114,12 +114,12 @@ class App extends React.Component {
             headers: { 'Content-Type': 'application/json' }
         })
         .then(result => {
-            if (result.status === 201) result.json()
-            .then(data => {
-                localStorage.setItem('token', data.token);
-                this.updateCurrentUser();
-            });
-            else {
+            if (result.status === 201) {
+                result.json().then(data => {
+                    localStorage.setItem('token', data.token);
+                    this.updateCurrentUser();
+                });
+            } else {
                 this.setState({ warningSignUp: 'Пользователь с таким логином уже существует' })
             }
         })
