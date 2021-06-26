@@ -93,8 +93,6 @@ export class PostService {
     public async takeNewPosts(date: Date, role: string): Promise<any> {
         const postInfoArray = await this.postRep.filterByDateEarly(date, role);
 
-        console.log(postInfoArray)
-
         if (postInfoArray.length === 0)
             throw new Error('There is no data ');
 
@@ -103,8 +101,6 @@ export class PostService {
 
     public async takeOldPosts(date: Date, count: number, role: string): Promise<any> {
         const postInfoArray = await this.postRep.filterByDateLater(date, count, role);
-
-        console.log(postInfoArray)
 
         if (postInfoArray.length === 0)
             throw new Error('There is no data ');
